@@ -1,41 +1,49 @@
 from cell import *
 from world import *
+from pygame_world import *
 
-rows = 5
-cols = 5
-initial_rate = .5
+rows = 50
+cols = 50
+initial_rate = .2
 cluster_area = 5
-w = World(rows, cols, initial_rate, cluster_area)
+# w = World(rows, cols, initial_rate, cluster_area)
+#
+# board = Board(rows, cols)
+# print(board.rows)
 
-print(w)
+run_game(rows, cols, initial_rate, cluster_area)
 
-
-def neighbors_grid(w):
-    print("neighbor's grid:")
-    s = ""
-    for row in w.grid:
-        for i in range(0, len(row)):
-            s = s + str(row[i].get_neighbors()) + " "
-        s = s + "\n"
-    print(s)
+# print(w)
+#
 
 
-neighbors_grid(w)
-print('updating world...')
-w.update_world()
-print(w)
-neighbors_grid(w)
+#
+# def neighbors_grid(w):
+#     print("neighbor's grid:")
+#     s = ""
+#     for row in w.grid:
+#         for i in range(0, len(row)):
+#             s = s + str(row[i].get_neighbors()) + " "
+#         s = s + "\n"
+#     print(s)
+#
+#
+# neighbors_grid(w)
+# print('updating world...')
+# w.update_world()
+# print(w)
+# neighbors_grid(w)
 
 
 # -------------Testing count_neighbors---------------
-def neighbors_grid(w):
-    print("neighbor's grid:")
-    s = ""
-    for row in w.grid:
-        for i in range(0, len(row)):
-            s = s + str(row[i].get_neighbors()) + " "
-        s = s + "\n"
-    print(s)
+# def neighbors_grid(w):
+#     print("neighbor's grid:")
+#     s = ""
+#     for row in w.grid:
+#         for i in range(0, len(row)):
+#             s = s + str(row[i].get_neighbors()) + " "
+#         s = s + "\n"
+#     print(s)
 
 
 # w.count_neighbors()
