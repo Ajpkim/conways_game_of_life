@@ -5,14 +5,12 @@ from cell import Cell
 
 class World():
 
-    def __init__(self, rows, cols, initial_rate, initial_color, dead_color,
-                 random_rate, cluster_effects, cluster_area):
-        # self.cell_grid = [[0 for i in range(rows)] for j in range(cols)]
-        self.cell_grid = [[Cell(initial_rate, random_rate, initial_color, dead_color)
+    def __init__(self, rows, cols, initial_rate, random_rate, initial_color, dead_color,
+                 cluster_color, cluster_area=7):
+        self.cell_grid = [[Cell(initial_rate, random_rate, initial_color, dead_color, cluster_color)
                            for c in range(cols)] for r in range(rows)]
         self.world_state = [[1 if self.cell_grid[r][c].get_state() else 0 for c in range(cols)]
                             for r in range(rows)]
-        self.cluster_effects = cluster_effects
         self.rows = rows
         self.cols = cols
         self.cluster_area = cluster_area if cluster_area % 2 == 1 else cluster_area + 1
@@ -46,23 +44,17 @@ class World():
 
                 if random.random() < cell.random_rate:
                     cell.make_alive()
-                    cell.set_color((0, 0, 0))
+                    cell.set_color(cell.dead_color)
                     # cell.set_color((random.randint(0, 255),
-                    # random.randint(0, 255), random.randint(0, 255)))
+                    #                 random.randint(0, 255), random.randint(0, 255)))
 
-                if self.cluster_effects:
+                if self.cluster_area >= 3:
                     self.cluster_effect(cell)
 
-                    # update cell properties after updating cell states
+        # update cell properties after updating cell states
         self.count_neighbors()
         self.count_cluster()
         self.set_world_state()
-
-        # # optional logic for cluster effects
-        # for row in self.cell_grid:
-        #     for col in self.cell_grid[row]:
-        #         cell = self.cell_grid[row][col]
-        #         cell.cluster_effect(5)
 
     def count_neighbors(self):
         for row in range(self.rows):
@@ -72,7 +64,7 @@ class World():
                 # look in 3x3 area with current cell in middle
                 for i in range(-1, 2):
                     for j in range(-1, 2):
-                        # conditions for checking if [i,j] neighbor cell is valid
+                        # conditions for checking if [i,j] neighbor cell is valid location
                         if (row + i >= 0
                             and row + i < self.rows
                             and col + j >= 0
@@ -91,7 +83,7 @@ class World():
 
                 for i in range(-(self.cluster_area // 2), self.cluster_area//2 + 1):
                     for j in range(-(self.cluster_area // 2), self.cluster_area//2 + 1):
-                        # conditions for checking if [i,j] neighbor cell is valid
+                        # conditions for checking if [i,j] neighbor cell is valid location
                         if (row + i >= 0
                             and row + i < self.rows
                             and col + j >= 0
