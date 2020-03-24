@@ -2,16 +2,23 @@ from cell import *
 from world import *
 from pygame_world import *
 
-rows = 50
-cols = 50
-initial_rate = .2
-cluster_area = 5
+rows = 35
+cols = 35
+initial_rate = .15
+initial_color = (255, 255, 255)
+dead_color = (0, 0, 0)
+random_rate = .00015
+cluster_effects = True
+cluster_area = 7
 # w = World(rows, cols, initial_rate, cluster_area)
 #
 # board = Board(rows, cols)
 # print(board.rows)
 
-run_game(rows, cols, initial_rate, cluster_area)
+# run_game(rows, cols, initial_rate, initial_color, dead_color, random_rate,
+#          cluster_effects, cluster_area)
+run_game(rows, cols)
+
 
 # print(w)
 #

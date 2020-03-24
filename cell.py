@@ -3,9 +3,10 @@ import random
 
 class Cell():
 
-    def __init__(self, initial_rate, initial_color=((0, 205, 0)), dead_color=((0, 0, 0))):
+    def __init__(self, initial_rate, random_rate, initial_color=((255, 255, 255)), dead_color=((0, 0, 0))):
         self.state = True if random.random() < initial_rate else False
         self.initial_rate = initial_rate
+        self.random_rate = random_rate
         self.initial_color = initial_color
         self.dead_color = dead_color
         self.color = initial_color if self.get_state() else dead_color
@@ -43,9 +44,9 @@ class Cell():
 
     def update_color(self):
         if self.get_state():  # defensive, should only be called by alive cells
-            r_change = random.randint(-30, 30)
-            g_change = random.randint(-30, 30)
-            b_change = random.randint(-30, 30)
+            r_change = random.randint(-20, 20)
+            g_change = random.randint(-20, 20)
+            b_change = random.randint(-20, 20)
 
             color = self.get_color()
 
@@ -58,9 +59,15 @@ class Cell():
 
             self.set_color((r, g, b))
 
-    def cluster_effect(self, n):
-        if self.cluster > n:
-            self.set_color((0, 255, 255))
+    def cluster_effect(self):
+        if self.get_state():
+            self.set_color((51, 255, 153))  # soft green
+            # self.set_color((255, 153, 255))  # pink
+            # self.set_color((51, 153, 255))  # light royal blue
+            # self.set_color((0, 255, 0))  # GREEN
+            # self.set_color((255, 255, 255))
+            # self.set_color((0, 255, 128))
+            # self.set_color((153, 255, 128))
 
     def __str__(self):
         if self.get_state():

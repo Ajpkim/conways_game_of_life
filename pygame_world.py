@@ -3,26 +3,25 @@ import time
 from world import World
 
 
-def run_game(rows, cols, initial_rate=0.3, cluster_area=5):
+def run_game(rows, cols, initial_rate=0.15, initial_color=((255, 255, 255)), dead_color=(0, 0, 0),
+             random_rate=.00015, cluster_effects=True, cluster_area=7):
     # create world to animate
-    world = World(rows, cols, initial_rate, cluster_area)
-
+    world = World(rows, cols, initial_rate,  initial_color, dead_color,
+                  random_rate, cluster_effects, cluster_area)
     pygame.init()
     board = pygame.display.set_mode((rows*10, cols*10))
     pygame.display.set_caption("Conway's Game of Life")
-    board.fill((50, 50, 50))
+    board.fill((0, 0, 0))
 
+    pause = False
     run = True
-
     while run:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]:
-            run = False
+            if pygame.key.get_pressed()[pygame.K_SPACE]:
+                run = False
 
         animate_world(world, board)
         world.update_world()
