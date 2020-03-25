@@ -3,14 +3,16 @@ import random
 
 class Cell():
 
-    def __init__(self, initial_rate=.15, random_rate=.00015, initial_color=((255, 255, 255)),
-                 dead_color=((0, 0, 0)), cluster_color=((51, 255, 153))):
+    def __init__(self, initial_rate=.15, random_rate=0, size=(9, 9), initial_color=(255, 255, 255),
+                 dead_color=(0, 0, 0), cluster_color=(51, 255, 153), color_rate=0):
         self.state = True if random.random() < initial_rate else False
         self.initial_rate = initial_rate
         self.random_rate = random_rate
+        self.size = size
         self.initial_color = initial_color
         self.dead_color = dead_color
         self.cluster_color = cluster_color
+        self.color_rate = color_rate
         self.color = initial_color if self.get_state() else dead_color
         self.neighbours = 0
         self.cluster = 0
@@ -24,6 +26,7 @@ class Cell():
 
     def make_dead(self):
         self.color = self.dead_color
+        # self.color = (125, 0, 0)
         self.state = False
 
     def get_neighbors(self):
@@ -46,9 +49,9 @@ class Cell():
 
     def update_color(self):
         if self.get_state():  # defensive, should only be called by alive cells
-            r_change = random.randint(-25, 25)
-            g_change = random.randint(-25, 25)
-            b_change = random.randint(-25, 25)
+            r_change = random.randint(-self.color_rate, self.color_rate)
+            g_change = random.randint(-self.color_rate, self.color_rate)
+            b_change = random.randint(-self.color_rate, self.color_rate)
 
             color = self.get_color()
 
@@ -63,13 +66,14 @@ class Cell():
 
     def cluster_effect(self):
         if self.get_state():
-            self.set_color(self.cluster_color)  # soft green
+            self.set_color(self.cluster_color)  # minty green... best
             # self.set_color((255, 153, 255))  # pink
             # self.set_color((51, 153, 255))  # light royal blue
             # self.set_color((0, 255, 0))  # GREEN
             # self.set_color((255, 255, 255))
             # self.set_color((0, 255, 128))
             # self.set_color((153, 255, 128))
+            # self.set_color((0, 0, 0))
 
     def __str__(self):
         if self.get_state():

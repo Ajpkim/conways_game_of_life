@@ -5,9 +5,12 @@ from cell import Cell
 
 class World():
 
-    def __init__(self, rows, cols, initial_rate, random_rate, initial_color, dead_color,
-                 cluster_color, cluster_area=7):
-        self.cell_grid = [[Cell(initial_rate, random_rate, initial_color, dead_color, cluster_color)
+    def __init__(self, rows=50, cols=50, initial_rate=.15, random_rate=0, size=(9, 9),
+                 cluster_area=0, initial_color=(255, 255, 255), dead_color=(0, 0, 0,),
+                 cluster_color=(51, 255, 153), color_rate=0):
+        # if preset:
+        #     pass
+        self.cell_grid = [[Cell(initial_rate, random_rate, size, initial_color, dead_color, cluster_color, color_rate)
                            for c in range(cols)] for r in range(rows)]
         self.world_state = [[1 if self.cell_grid[r][c].get_state() else 0 for c in range(cols)]
                             for r in range(rows)]
@@ -16,13 +19,31 @@ class World():
         self.cluster_area = cluster_area if cluster_area % 2 == 1 else cluster_area + 1
 
         # make initalizing call to count_neighbors and count_cluster to intitalize cell properties
+
         self.count_neighbors()
         self.count_cluster()
 
     def get_world_state(self):
         return self.world_state
 
-    def set_world_state(self):
+    def set_world_state(self, custom_state):
+        assert len(custom_state) == self.rows
+        assert len(custom_state[0]) == self.cols
+
+        for row in range(self.rows):
+            for col in range(self.cols):
+                cell = self.cell_grid[row][col]
+
+                if custom_state[row][col] == 1:
+                    cell.make_alive()
+                else:
+                    cell.make_dead()
+
+        self.count_neighbors()
+        self.count_cluster()
+        self.update_world_state()
+
+    def update_world_state(self):
         self.world_state = [[1 if self.cell_grid[r][c].get_state() else 0 for c in range(self.cols)]
                             for r in range(self.rows)]
 
@@ -54,7 +75,7 @@ class World():
         # update cell properties after updating cell states
         self.count_neighbors()
         self.count_cluster()
-        self.set_world_state()
+        self.update_world_state()
 
     def count_neighbors(self):
         for row in range(self.rows):

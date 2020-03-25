@@ -1,6 +1,26 @@
+import numpy as np
 from cell import *
 from world import *
 from pygame_world import *
+from custom_world import CustomWorld
+
+
+# def get_state_from_file(filename):
+#     with open(filename, 'r') as f:
+#         state = np.genfromtxt(filename, delimiter=",")
+#     return data
+#
+#
+# filename = "custom_states/10x10_template.txt"
+#
+# custom_state = get_state_from_file(filename)
+# print(custom_state)
+
+# cw = CustomWorld()
+
+# for i in range(len(data)):
+#     for j in range(len(data)):
+#         data[i][j] = int
 
 
 # rows = 50
