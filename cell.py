@@ -3,8 +3,8 @@ import random
 
 class Cell():
 
-    def __init__(self, initial_rate=.15, random_rate=0, size=(9, 9), initial_color=(255, 255, 255),
-                 dead_color=(0, 0, 0), cluster_color=(51, 255, 153), color_rate=0):
+    def __init__(self, initial_rate=.15, random_rate=0, size=(9, 9), initial_color=(51, 255, 153),
+                 dead_color=(0, 0, 0), cluster_color=(255, 153, 255), color_rate=0):
         self.state = True if random.random() < initial_rate else False
         self.initial_rate = initial_rate
         self.random_rate = random_rate
@@ -51,7 +51,7 @@ class Cell():
         if self.get_state():  # defensive, should only be called by alive cells
             r_change = random.randint(-self.color_rate, self.color_rate)
             g_change = random.randint(-self.color_rate, self.color_rate)
-            b_change = random.randint(-self.color_rate, self.color_rate)
+            b_change = random.randint(0, self.color_rate)  # arbitrary preference
 
             color = self.get_color()
 

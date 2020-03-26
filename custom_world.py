@@ -3,38 +3,34 @@ import numpy as np
 from cell import Cell
 
 
-class World():
+class CustomWorld():
 
-    def __init__(self, rows=50, cols=50, initial_rate=.15, random_rate=0, size=(9, 9),
+    def __init__(self, state, initial_rate=.15, random_rate=0, size=(9, 9),
                  cluster_area=0, initial_color=(255, 255, 255), dead_color=(0, 0, 0,),
                  cluster_color=(51, 255, 153), color_rate=0):
-        # if preset:
-        #     pass
+
+        self.rows = len(state)
+        self.cols = len(state[0])
         self.cell_grid = [[Cell(initial_rate, random_rate, size, initial_color, dead_color, cluster_color, color_rate)
-                           for c in range(cols)] for r in range(rows)]
-        self.world_state = [[1 if self.cell_grid[r][c].get_state() else 0 for c in range(cols)]
-                            for r in range(rows)]
-        self.rows = rows
-        self.cols = cols
+                           for c in range(self.cols)] for r in range(self.rows)]
+        self.world_state = state
+        # self.world_state = [[1 if self.cell_grid[r][c].get_state() else 0 for c in range(cols)]
+        #                     for r in range(rows)]
         self.cluster_area = cluster_area if cluster_area % 2 == 1 else cluster_area + 1
-
-        # make initalizing call to count_neighbors and count_cluster to intitalize cell properties
-
-        self.count_neighbors()
-        self.count_cluster()
+        self.set_world_state(state)
 
     def get_world_state(self):
         return self.world_state
 
-    def set_world_state(self, custom_state):
-        assert len(custom_state) == self.rows
-        assert len(custom_state[0]) == self.cols
+    def set_world_state(self, state):
+        assert len(state) == self.rows
+        assert len(state[0]) == self.cols
 
         for row in range(self.rows):
             for col in range(self.cols):
                 cell = self.cell_grid[row][col]
 
-                if custom_state[row][col] == 1:
+                if state[row][col] == 1:
                     cell.make_alive()
                 else:
                     cell.make_dead()
@@ -58,7 +54,8 @@ class World():
                     if cell.get_neighbors() < 2 or cell.get_neighbors() > 3:
                         cell.make_dead()
                     else:
-                        cell.update_color()
+                        if cell.color_rate > 0:  # possibly improve speed on larger inputs without color adj.
+                            cell.update_color()
                 else:
                     if cell.get_neighbors() == 3:
                         cell.make_alive()
@@ -74,7 +71,8 @@ class World():
 
         # update cell properties after updating cell states
         self.count_neighbors()
-        self.count_cluster()
+        if self.cluster_area >= 3:
+            self.count_cluster()
         self.update_world_state()
 
     def count_neighbors(self):
