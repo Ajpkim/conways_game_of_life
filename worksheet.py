@@ -1,9 +1,62 @@
 import numpy as np
 from cell import *
-from world import *
-from pygame_world import *
+from basic_world import BasicWorld
 from custom_world import CustomWorld
+from run_pygame import *
+from helper_functions import *
 
+# help(pygame.display)
+filename = "custom_states/testing_get_state.txt"
+state = get_state_from_file(filename)
+
+world = BasicWorld(state)
+
+board = pygame.display.set_mode((world.cols*10, world.rows*10))
+
+animate_world(world, board)
+
+for row in range(world.rows):
+    print([cell.__str__() for cell in world.cell_grid[row]])
+
+
+# print('state...')
+# for row in state:
+#     print(row)
+#
+#
+# print("")
+#
+#
+# print('cell grid...')
+# for row in range(bw.rows):
+#
+#     print([cell.__str__() for cell in bw.cell_grid[row]])
+#
+# print("")
+# print('updating...')
+# bw.update_world()
+# print('updated cell grid...')
+# for row in range(bw.rows):
+#
+#     print([cell.__str__() for cell in bw.cell_grid[row]])
+
+
+# row = ['1' if cell.get_state() else 0 for cell in bw.cell_grid[row]]
+# print(row)
+# print(bw)
+
+# print('cell gird', bw.cell_grid)
+
+
+# filename = "custom_states/testing_get_state.txt"
+# bw = BasicWorld(filename)
+# print(bw)
+
+# fw = BasicWorld(custom_state=[[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]])
+# print(fw)
+# fw.update_world()
+# print(fw)
+# game_loop(fw)
 
 # def get_state_from_file(filename):
 #     with open(filename, 'r') as f:
@@ -15,6 +68,10 @@ from custom_world import CustomWorld
 #
 # custom_state = get_state_from_file(filename)
 # print(custom_state)
+# run_classic_game(.15, 65, 65)
+
+# cw = CustomWorld(create_random_grid(.5, 10, 10))
+# print(cw)
 
 # cw = CustomWorld()
 
